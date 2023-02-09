@@ -6,6 +6,9 @@
 # Other files
 matmccann-media_server/
 *.zip
+*/*.zip
+*/*/*.zip
+*/*/*/*.zip
 .docker/media_server/*.zip
 *ant-media-server-community*
 
