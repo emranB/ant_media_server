@@ -3,6 +3,12 @@
 # Learn more about .gitignore:
 #     https://www.atlassian.com/git/tutorials/saving-changes/gitignore
 
+# Other files
+matmccann-media_server/
+*.zip
+.docker/media_server/*.zip
+*ant-media-server-community*
+
 # Node artifact files
 node_modules/
 dist/
@@ -47,12 +53,6 @@ Thumbs.db
 *.flv
 *.mov
 *.wmv
-
-# Other files
-matmccann-media_server/
-*.zip
-.docker/media_server/*.zip
-*ant-media-server-community*
 
 # IDE specific files
 .vscode/
