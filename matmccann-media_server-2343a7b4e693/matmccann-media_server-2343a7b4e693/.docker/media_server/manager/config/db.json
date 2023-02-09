@@ -1,8 +1,0 @@
-{
-    "host"                       : "172.23.0.10",
-    "port"                       : "27017",
-    "username"                   : "root",
-    "password"                   : "password",
-    "db_name"                    : "storage_files",
-    "file_paths_collection_name" : "file_paths"
-}

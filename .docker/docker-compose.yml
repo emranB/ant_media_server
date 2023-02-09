@@ -81,7 +81,6 @@ services:
         mode: host
       - "3000:3000"
       - "9200:9200"
-      # - "9092:9092"
     networks:
       cloud_manager:
         ipv4_address: 172.23.0.2
