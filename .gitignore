@@ -6,11 +6,7 @@
 # Other files
 matmccann-media_server/
 *.zip
-*/*.zip
-*/*/*.zip
-*/*/*/*.zip
-.docker/media_server/*.zip
-*ant-media-server-community*
+*/test/*
 
 # Node artifact files
 node_modules/
