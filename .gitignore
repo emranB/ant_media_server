@@ -52,6 +52,7 @@ Thumbs.db
 matmccann-media_server/
 *.zip
 .docker/media_server/*.zip
+*ant-media-server-community*
 
 # IDE specific files
 .vscode/
