@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
 import time, os, json
-from multiprocessing import Process as MultiProcProcess
-from threading import Thread as MultithreadingThread
+from multiprocessing import Process
+from threading import Thread
 
 # Root directory - env var 'MANAGER_ROOT' is set in run.sh
 ROOT_DIR = os.environ['MANAGER_ROOT']
@@ -45,7 +45,7 @@ class MultiprocProcess:
         self.procs = []
 
     def addProcess(self, targetHandler):
-        newProc = MultiProcProcess(target=targetHandler)
+        newProc = Process(target=targetHandler)
         self.procs.append(newProc)
         newProc.start()
         time.sleep(1)   # Allow a moment for service to startup ok during init
@@ -61,7 +61,7 @@ class MultithreadingThread:
         self.threads = []
 
     def addThread(self, targetHandler):
-        newThread = MultithreadingThread(target=targetHandler)
+        newThread = Thread(target=targetHandler)
         newThread.setDaemon(True)
         self.threads.append(newThread)
         newThread.start()

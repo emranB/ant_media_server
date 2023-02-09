@@ -3,12 +3,13 @@
 import time, signal, sys
 from assistant import Assistant
 from storageHandler import StorageHandler
-from utils import MultiProcProcess, MultithreadingThread
+from utils import MultiprocProcess, MultithreadingThread
 
 assistant = Assistant()
 storageHandler = StorageHandler()
+multiProc = MultiprocProcess()
+multiThread = MultithreadingThread()
 processorType = 'multiprocessing'
-# subProcs = []
 
 # Signal handler
 def signalHandler(signal, handler):
@@ -19,12 +20,12 @@ signal.signal(signal.SIGINT, signalHandler)
 def shutdownSystem():
     match(processorType):
         case 'multiprocessing':
-            MultiProcProcess.killAllProcesses()
+            multiProc.killAllProcesses()
         case 'multithreading':
-            MultithreadingThread.killAllThreads()
+            multiThread.killAllThreads()
             pass
         case _:
-            MultiProcProcess.killAllProcesses()
+            multiProc.killAllProcesses()
     sys.exit(0)
 
 # Read user input and redirect to cmds, if avaiable 
@@ -55,10 +56,10 @@ def updateStorageHandler():
         
 def mainMultiProc():
     # Create sub proc to periodically backup saved files
-    storageHandlerSubProc = MultiProcProcess.addProcess(updateStorageHandler)
+    storageHandlerSubProc = multiProc.addProcess(targetHandler=updateStorageHandler)
 
     # Create sub proc to serve APIs through router
-    assitantSubProc = MultiProcProcess.addProcess(assistant.runRouter)
+    assitantSubProc = multiProc.addProcess(targetHandler=assistant.runRouter)
 
     storageHandlerSubProcIsAlive = storageHandlerSubProc.is_alive()
     if storageHandlerSubProcIsAlive: print("Storage handler running ok.")
@@ -76,10 +77,10 @@ def mainMultiProc():
 
 def mainMultiThread():
     # Create sub proc to periodically backup saved files
-    storageHandlerThread = MultithreadingThread.addThread(updateStorageHandler)
+    storageHandlerThread = multiThread.addThread(targetHandler=updateStorageHandler)
 
     # Create sub proc to serve APIs through router
-    assitantThread = MultithreadingThread.addThread(assistant.runRouter)
+    assitantThread = multiThread.addThread(targetHandler=assistant.runRouter)
 
     storageHandlerThreadIsAlive = storageHandlerThread.is_alive()
     if storageHandlerThreadIsAlive: print("Storage handler running ok.")
