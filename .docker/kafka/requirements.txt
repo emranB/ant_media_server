@@ -1,0 +1,4 @@
+# Kafka
+fastavro==0.22.13
+avro-python3==1.10.0
+confluent-kafka==1.3.0

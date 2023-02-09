@@ -1,0 +1,6 @@
+{
+    "enable_backup"       : true,
+    "storage_backup_time" : 5,
+    "input_files_dir"     : "/antmedia/webapps/WebRTCApp/streams/test-001",
+    "output_files_dir"    : "/manager/antmedia_backups"
+}

@@ -1,0 +1,218 @@
+{
+	"info": {
+		"_postman_id": "9d96da25-3816-444b-a045-e48ffaa6ca9e",
+		"name": "AntMediaServer",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "8709326"
+	},
+	"item": [
+		{
+			"name": "/broadcast/create",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"streamId\": {{streamId}},\n  \"status\": \"created\",\n  \"playListStatus\": \"created\",\n  \"type\": \"liveStream\",\n  \"publishType\": \"WebRTC\",\n  \"name\": {{streamId}},\n  \"description\": \"example of adding an edge device adding a second source\",\n  \"publish\": true,\n  \"date\": 0,\n  \"plannedStartDate\": 0,\n  \"plannedEndDate\": 0,\n  \"duration\": 0,\n  \"endPointList\": [\n    {\n      \"status\": \"string\",\n      \"type\": \"string\",\n      \"rtmpUrl\": \"string\",\n      \"endpointServiceId\": \"string\"\n    }\n  ],\n  \"playListItemList\": [\n    {\n      \"streamUrl\": \"string\",\n      \"type\": \"string\"\n    }\n  ],\n  \"publicStream\": true,\n  \"is360\": false,\n  \"listenerHookURL\": \"string\",\n  \"category\": \"edge-device\",\n  \"ipAddr\": \"10.36.3.12\",\n  \"username\": \"admin\",\n  \"password\": \"admin911\",\n  \"quality\": \"high\",\n  \"speed\": 0,\n  \"streamUrl\": \"/cam/realmonitor?channel=1&subtype=0\",\n  \"originAdress\": \"10.36.3.55:554\",\n  \"mp4Enabled\": 0,\n  \"webMEnabled\": 0,\n  \"expireDurationMS\": 0,\n  \"rtmpURL\": \"string\",\n  \"zombi\": true,\n  \"pendingPacketSize\": 0,\n  \"hlsViewerCount\": 0,\n  \"webRTCViewerCount\": 1,\n  \"rtmpViewerCount\": 0,\n  \"startTime\": 0,\n  \"receivedBytes\": 0,\n  \"bitrate\": 0,\n  \"userAgent\": \"string\",\n  \"latitude\": \"45.423284846889686\",\n  \"longitude\": \"-75.69808755157464\",\n  \"altitude\": \"230\",\n  \"mainTrackStreamId\": \"string\",\n  \"subTrackStreamIds\": [\n    \"string\"\n  ],\n  \"absoluteStartTimeMs\": 0,\n  \"webRTCViewerLimit\": 10,\n  \"hlsViewerLimit\": 0,\n  \"subFolder\": \"string\",\n  \"currentPlayIndex\": 0,\n  \"metaData\": \"rosa-72\",\n  \"playlistLoopEnabled\": true\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{MEDIA_URL}}/{{REST_PATH}}/broadcasts/create",
+					"host": [
+						"{{MEDIA_URL}}"
+					],
+					"path": [
+						"{{REST_PATH}}",
+						"broadcasts",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/broadcast/{streamId}/start",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{MEDIA_URL}}/{{REST_PATH}}/broadcasts/{{streamId}}/start",
+					"host": [
+						"{{MEDIA_URL}}"
+					],
+					"path": [
+						"{{REST_PATH}}",
+						"broadcasts",
+						"{{streamId}}",
+						"start"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/broadcast/{streamId}/stop",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{MEDIA_URL}}/{{REST_PATH}}/broadcasts/{{streamId}}/stop",
+					"host": [
+						"{{MEDIA_URL}}"
+					],
+					"path": [
+						"{{REST_PATH}}",
+						"broadcasts",
+						"{{streamId}}",
+						"stop"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/broadcast/validate-token",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"tokenId\": \"string\",\n  \"streamId\": {{streamId}},\n  \"expireDate\": 0,\n  \"type\": \"string\",\n  \"roomId\": \"string\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{MEDIA_URL}}/{{REST_PATH}}/broadcasts/validate-token",
+					"host": [
+						"{{MEDIA_URL}}"
+					],
+					"path": [
+						"{{REST_PATH}}",
+						"broadcasts",
+						"validate-token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/broadcast/count",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{MEDIA_URL}}/{{REST_PATH}}/broadcasts/count",
+					"host": [
+						"{{MEDIA_URL}}"
+					],
+					"path": [
+						"{{REST_PATH}}",
+						"broadcasts",
+						"count"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/broadcasts/active-live-stream-count",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{MEDIA_URL}}/{{REST_PATH}}/broadcasts/active-live-stream-count",
+					"host": [
+						"{{MEDIA_URL}}"
+					],
+					"path": [
+						"{{REST_PATH}}",
+						"broadcasts",
+						"active-live-stream-count"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/broadcast/webrtc-receive-low-level-stats",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{MEDIA_URL}}/{{REST_PATH}}/broadcasts/webrtc-receive-low-level-stats",
+					"host": [
+						"{{MEDIA_URL}}"
+					],
+					"path": [
+						"{{REST_PATH}}",
+						"broadcasts",
+						"webrtc-receive-low-level-stats"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/broadcast/webrtc-send-low-level-stats",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{MEDIA_URL}}/{{REST_PATH}}/broadcasts/webrtc-send-low-level-stats",
+					"host": [
+						"{{MEDIA_URL}}"
+					],
+					"path": [
+						"{{REST_PATH}}",
+						"broadcasts",
+						"webrtc-send-low-level-stats"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/broadcast/{streamId}/jwt-token",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{MEDIA_URL}}/{{REST_PATH}}/broadcasts/{{streamId}}/jwt-token",
+					"host": [
+						"{{MEDIA_URL}}"
+					],
+					"path": [
+						"{{REST_PATH}}",
+						"broadcasts",
+						"{{streamId}}",
+						"jwt-token"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
