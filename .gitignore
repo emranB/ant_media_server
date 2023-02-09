@@ -48,10 +48,10 @@ Thumbs.db
 *.mov
 *.wmv
 
-# IDE specific files
-.vscode/
-
 # Other files
 matmccann-media_server/
 *.zip
-.docker/media_server/ant-media-server-community-2.5.1.zip
+.docker/media_server/*.zip
+
+# IDE specific files
+.vscode/
