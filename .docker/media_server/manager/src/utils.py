@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 
-import time
-import os
-import json
-from io import BufferedReader
+import time, os, json
+from multiprocessing import Process as MultiProcProcess
+from threading import Thread as MultithreadingThread
 
 # Root directory - env var 'MANAGER_ROOT' is set in run.sh
 ROOT_DIR = os.environ['MANAGER_ROOT']
@@ -40,3 +39,37 @@ class SystemPath:
 
     def getFilePath(self, filePathEndFragment):
         return f'{ROOT_DIR}{filePathEndFragment}'
+
+class MultiprocProcess:
+    def __init__(self):
+        self.procs = []
+
+    def addProcess(self, targetHandler):
+        newProc = MultiProcProcess(target=targetHandler)
+        self.procs.append(newProc)
+        newProc.start()
+        time.sleep(1)   # Allow a moment for service to startup ok during init
+        return newProc
+
+    def killAllProcesses(self):
+        for proc in self.procs:
+            proc.terminate()
+            proc.join()
+
+class MultithreadingThread:
+    def __init__(self):
+        self.threads = []
+
+    def addThread(self, targetHandler):
+        newThread = MultithreadingThread(target=targetHandler)
+        newThread.setDaemon(True)
+        self.threads.append(newThread)
+        newThread.start()
+        time.sleep(1)   # Allow a moment for service to startup ok during init
+        return newThread
+
+    def killAllThreads(self):
+        for thread in self.newThread:
+            thread.terminate()
+            thread.join()
+            

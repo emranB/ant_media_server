@@ -1,15 +1,14 @@
 #!/usr/bin/env python3
 
-import time
-import signal
-import sys
-import multiprocessing
+import time, signal, sys
 from assistant import Assistant
 from storageHandler import StorageHandler
+from utils import MultiProcProcess, MultithreadingThread
 
 assistant = Assistant()
 storageHandler = StorageHandler()
-subProcs = []
+processorType = 'multiprocessing'
+# subProcs = []
 
 # Signal handler
 def signalHandler(signal, handler):
@@ -18,10 +17,14 @@ signal.signal(signal.SIGINT, signalHandler)
 
 # Kill all subprocesses on exit
 def shutdownSystem():
-    print('Shutting down...')
-    for proc in subProcs:
-        proc.terminate()
-        proc.join()
+    match(processorType):
+        case 'multiprocessing':
+            MultiProcProcess.killAllProcesses()
+        case 'multithreading':
+            MultithreadingThread.killAllThreads()
+            pass
+        case _:
+            MultiProcProcess.killAllProcesses()
     sys.exit(0)
 
 # Read user input and redirect to cmds, if avaiable 
@@ -49,20 +52,13 @@ def readUserInput():
 def updateStorageHandler():
     while True:
         storageHandler.update()
-
-# Main loop
-if __name__ == '__main__':
+        
+def mainMultiProc():
     # Create sub proc to periodically backup saved files
-    storageHandlerSubProc = multiprocessing.Process(target=updateStorageHandler)
-    subProcs.append(storageHandlerSubProc)
-    storageHandlerSubProc.start()
-    time.sleep(1)
+    storageHandlerSubProc = MultiProcProcess.addProcess(updateStorageHandler)
 
     # Create sub proc to serve APIs through router
-    assitantSubProc = multiprocessing.Process(target=assistant.runRouter)
-    subProcs.append(assitantSubProc)
-    assitantSubProc.start()
-    time.sleep(1)
+    assitantSubProc = MultiProcProcess.addProcess(assistant.runRouter)
 
     storageHandlerSubProcIsAlive = storageHandlerSubProc.is_alive()
     if storageHandlerSubProcIsAlive: print("Storage handler running ok.")
@@ -77,5 +73,36 @@ if __name__ == '__main__':
                 time.sleep(1)
     except KeyboardInterrupt:
         print("Exitting...")
+
+def mainMultiThread():
+    # Create sub proc to periodically backup saved files
+    storageHandlerThread = MultithreadingThread.addThread(updateStorageHandler)
+
+    # Create sub proc to serve APIs through router
+    assitantThread = MultithreadingThread.addThread(assistant.runRouter)
+
+    storageHandlerThreadIsAlive = storageHandlerThread.is_alive()
+    if storageHandlerThreadIsAlive: print("Storage handler running ok.")
+
+    assitantThreadIsAlive = assitantThread.is_alive()
+    if assitantThreadIsAlive: print("Assistant running ok.")
+
+    try:
+        while True:
+            if (storageHandlerThreadIsAlive and assitantThreadIsAlive): # Keep reading user input until subprocesses are running and alive
+                readUserInput()     
+                time.sleep(1)
+    except KeyboardInterrupt:
+        print("Exitting...")
+
+# Main loop
+if __name__ == '__main__':
+    match(processorType):
+        case 'multiprocessing':
+            mainMultiProc()
+        case 'multithreading':
+            mainMultiThread()
+        case _:
+            mainMultiProc()
 
     shutdownSystem()
