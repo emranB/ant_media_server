@@ -3,7 +3,7 @@ Instructions to run and deploy app:
 1. Make sure you're starting at the root of the project, or navigate to to location where .docker directory is located.
 
 2. From a terminal (running in admin mode if running from windows OS), use:
-    cd .docker
+        cd .docker
 
 3. To build docker services, use:
     docker-compose -f docker-compose.yml build
