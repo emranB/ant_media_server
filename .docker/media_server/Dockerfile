@@ -16,7 +16,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install -y \
     curl wget iproute2 cron logrotate \
     gawk openjdk-8-jdk \
-    sudo curl gnupg systemd \
+    sudo curl gnupg systemd dos2unix \
     nmap vim net-tools \
     python3 python3-pip ffmpeg 
 
@@ -100,7 +100,8 @@ COPY start_media_server_and_create_stream.sh /usr/local
 RUN cd /usr/local/manager \
     && pwd \
     && pip install -r requirements.txt \
-    && chmod 755 run.sh
+    && chmod 755 run.sh \
+    && dos2unix run.sh
 
 WORKDIR /usr/local
 ####################################################################
