@@ -1,11 +1,8 @@
 #!/usr/bin/env python3
 
-import time
-import signal
-import sys
-import multiprocessing
-from assistant import Assistant
-from storageHandler import StorageHandler
+import time, signal, sys, multiprocessing
+from modules.assistant import Assistant
+from modules.storageHandler import StorageHandler
 
 assistant = Assistant()
 storageHandler = StorageHandler()

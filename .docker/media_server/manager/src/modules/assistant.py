@@ -1,10 +1,8 @@
 #!/usr/bin/env python3
 
 from flask import Flask, request, jsonify
-import json
-import requests
-import os
-from utils import ConfigUtil
+import json, requests, os
+from modules.utils import ConfigUtil
 
 ROUTER = Flask(__name__)
 

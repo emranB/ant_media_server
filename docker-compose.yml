@@ -22,7 +22,7 @@ networks:
 services:
   # Needed for kafka broker management
   zookeeper:
-    build: ./zookeeper
+    build: ./.docker/zookeeper
     container_name: zookeeper
     ports:
       - "2181:2181"
@@ -35,7 +35,7 @@ services:
 
   # Message passing service
   kafka:
-    build: ./kafka
+    build: ./.docker/kafka
     container_name: kafka
     ports:
       - "9092:9092"
@@ -59,7 +59,7 @@ services:
 
   # Streaming service (source)
   gstreamer:
-    build: ./gstreamer
+    build: ./.docker/gstreamer
     container_name: gstreamer
     working_dir: /start
     tty: true   # keep alive, equivalent to `-t` on the terminal
@@ -71,7 +71,7 @@ services:
   media_server:
     privileged: true
     build: 
-      context: ./media_server
+      context: ./.docker/media_server
       args: 
         AntMediaServer: ant-media-server-community-2.5.1.zip
     container_name: media_server
@@ -100,4 +100,3 @@ services:
     networks:
       cloud_manager:
         ipv4_address: 172.23.0.10
-

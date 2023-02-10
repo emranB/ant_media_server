@@ -1,9 +1,6 @@
 #!/usr/bin/env python3
 
-import time
-import os
-import json
-from io import BufferedReader
+import time, os, json
 
 # Root directory - env var 'MANAGER_ROOT' is set in run.sh
 ROOT_DIR = os.environ['MANAGER_ROOT']

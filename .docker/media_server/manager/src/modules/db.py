@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
 from pymongo import MongoClient, errors
-from utils import ConfigUtil
 from bson import ObjectId, json_util
+from modules.utils import ConfigUtil
 
 class Db:
     def __init__(self):
