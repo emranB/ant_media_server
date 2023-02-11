@@ -3,9 +3,13 @@
 import time, signal, sys, multiprocessing
 from modules.assistant import Assistant
 from modules.storageHandler import StorageHandler
+from modules.db import Db
+from modules.utils import ConfigUtil
 
-assistant = Assistant()
-storageHandler = StorageHandler()
+assistant = Assistant(ConfigUtil().getConfig('/manager/config/api.json'))
+database = Db(ConfigUtil().getConfig('/manager/config/db.json'))
+storageHandler = StorageHandler(ConfigUtil().getConfig('/manager/config/storageHandler.json'), database)
+
 subProcs = []
 
 # Signal handler

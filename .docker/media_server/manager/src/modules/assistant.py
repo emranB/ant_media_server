@@ -1,16 +1,10 @@
 #!/usr/bin/env python3
 
 from flask import Flask, request, jsonify
-import json, requests, os
+import json, requests
 from modules.utils import ConfigUtil
 
 ROUTER = Flask(__name__)
-
-# Root directory - env var 'MANAGER_ROOT' is set in run.sh
-ROOT_DIR = os.environ['MANAGER_ROOT']
-
-# Load config params required for API calls
-API_CONFIG = ConfigUtil().getConfig('/manager/config/api.json')
 
 # Routes / Commands:
 #   - create stream
@@ -19,7 +13,9 @@ API_CONFIG = ConfigUtil().getConfig('/manager/config/api.json')
 #   - start play
 #   - stop play
 class Assistant:
-    def __init__(self):
+    def __init__(self, config: dict):
+        self.config = config
+
         # Test routes
         ROUTER.add_url_rule('/',        'default',  self.defaultFunc,   methods=['GET'])
         ROUTER.add_url_rule('/test',    'test',     self.test,          methods=['GET'])
@@ -77,7 +73,7 @@ class Assistant:
     # Endpoint callback - "/get_stream" - Get stream by streamId
     # Full endpoint     - IP:port/WebRTCApp/rest/v2/broadcasts/{{stream_id}} - GET
     def getStream(self, streamId=''):        
-        suffix = f'/broadcasts/{API_CONFIG["stream_id"]}' 
+        suffix = f'/broadcasts/{self.config["stream_id"]}' 
         result = self.executeApiCall('GET', suffix)
         return json.loads(result.content)['rtmpURL'] if result.ok else result.content
 
@@ -103,7 +99,7 @@ class Assistant:
     # Endpoint callback - "/delete_stream" - Delete stream by streamId
     # Full endpoint     - IP:port/WebRTCApp/rest/v2/broadcasts/{{stream_id}} - DELETE
     def deleteStream(self, streamId=''):
-        id = streamId if streamId != '' else API_CONFIG["stream_id"]     
+        id = streamId if streamId != '' else self.config["stream_id"]     
         suffix = f'/broadcasts/{id}' 
         result = self.executeApiCall('DELETE', suffix)
         return result.content if result else {}
@@ -111,7 +107,7 @@ class Assistant:
     # Endpoint callback - "/enable_backup" - When enabled, stream videos are stored in location specified by 'sub-folder' field
     # Full endpoint     - IP:port/WebRTCApp/rest/v2/broadcasts/{{stream_id}}/recording/{{recording_state - TRUE | FALSE}}/?recordingType= - POST
     def enableBackup(self, streamId='', enable='', recordingType=''):
-        streamId = streamId if streamId != '' else API_CONFIG["stream_id"]     
+        streamId = streamId if streamId != '' else self.config["stream_id"]     
         enable = enable if enable != '' else 'true'     
 
         suffix = f'/broadcasts/{streamId}/recording/{enable}'
@@ -134,7 +130,7 @@ class Assistant:
     # Endpoint callback - "/start_play" - Starts playing videos in an established stream by streamId
     # Full endpoint     - IP:port/WebRTCApp/rest/v2/broadcasts/{{stream_id}}/start - POST
     def startPlay(self, streamId=''):
-        id = streamId if streamId != '' else API_CONFIG["stream_id"]     
+        id = streamId if streamId != '' else self.config["stream_id"]     
         suffix = f'/broadcasts/{id}/start'
         result = self.executeApiCall('POST', suffix)
         return result.content if result else {}
@@ -142,14 +138,14 @@ class Assistant:
     # Endpoint callback - "/stop_play" - Stop playing videos in an established stream by streamId
     # Full endpoint     - IP:port/WebRTCApp/rest/v2/broadcasts/{{stream_id}}/stop - POST
     def stopPlay(self):   
-        suffix = f'/broadcasts/{API_CONFIG["stream_id"]}/stop'
+        suffix = f'/broadcasts/{self.config["stream_id"]}/stop'
         result = self.executeApiCall('POST', suffix)
         return result.content if result else {}
 
     # Generate path, given suffix
     def generateApiEndpoint(self, suffix=''):
         if suffix == '': return ''
-        prefix = f'{API_CONFIG["media_url"]}/{API_CONFIG["rest_path"]}'
+        prefix = f'{self.config["media_url"]}/{self.config["rest_path"]}'
         return f'{prefix}{suffix}'
 
     # Compile full API endpoint, and make call to endpoint
@@ -157,7 +153,7 @@ class Assistant:
         if suffix == '': return {}
         
         url = self.generateApiEndpoint(suffix)
-        headers = API_CONFIG['headers']
+        headers = self.config['headers']
         if      type == 'GET'    : return requests.get(url, headers=headers)
         elif    type == 'POST'   : return requests.post(url, data=json.dumps(cfg), headers=headers)
         elif    type == 'DELETE' : return requests.delete(url, headers=headers)

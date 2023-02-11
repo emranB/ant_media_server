@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 
 from pymongo import MongoClient, errors
-from bson import ObjectId, json_util
-from modules.utils import ConfigUtil
+from bson import ObjectId
+
 
 class Db:
-    def __init__(self):
-        self.config = ConfigUtil().getConfig('/manager/config/db.json')
+    def __init__(self, config: dict):
+        self.config = config
 
         try:
             mongoConnectUrl = f'mongodb://{self.config["username"]}:{self.config["password"]}@{self.config["host"]}:{self.config["port"]}/?authSource=admin'
@@ -27,7 +27,6 @@ class Db:
         for elem in self.filePathsCollection.find({}):
             elems.append(elem)
         return elems
-        return json_util.dumps(elems)
 
     def findById(self, id):
         return self.filePathsCollection.find_one({"_id": ObjectId(id)})

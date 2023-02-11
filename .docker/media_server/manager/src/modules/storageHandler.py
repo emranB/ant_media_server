@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 
 import os, time, calendar, shutil, ffmpeg, json
-from modules.utils import Timer, ConfigUtil, SystemPath
+from modules.utils import Timer, SystemPath
 from modules.db import Db
 
 class StorageHandler:
-    def __init__(self):
+    def __init__(self, config: dict, database: Db):
+        self.config = config
         self.backupTimer = Timer()
-        self.config = ConfigUtil().getConfig('/manager/config/storageHandler.json')
-        self.db = Db()
+        self.db = database
         self.backedUpFiles = []
         self.supportedVideoFormats = ['.mp4', '.avi', '.ts']
 
@@ -24,7 +24,6 @@ class StorageHandler:
         self.timeElapsedSinceLastBackup = 0
         self.backupTimer.start()
 
-    # def listAllBackups(self)    : return json.dumps(json.loads(self.db.listAll()), indent=4)
     def listAllBackups(self)    : return self.db.listAll()
     def clearAllBackups(self)   : return self.db.clearCollection()
     def dropBackupsTable(self)  : return self.db.dropCollection()
